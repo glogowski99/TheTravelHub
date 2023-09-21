@@ -1,11 +1,35 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import HotelsView from "@/views/HotelsView";
+import WeatherView from "@/views/WeatherView";
+import CurrencyView from "@/views/CurrencyView";
+import FlightsView from "@/views/FlightsView";
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/hotels',
+    name: 'hotels',
+    component: HotelsView
+  },
+  {
+    path: '/weather',
+    name: 'weather',
+    component: WeatherView
+  },
+  {
+    path: '/currency',
+    name: 'currency',
+    component: CurrencyView
+  },
+  {
+    path: '/flights',
+    name: 'flights',
+    component: FlightsView
   },
   {
     path: '/about',
