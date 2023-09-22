@@ -69,7 +69,7 @@
               'border-radius': showBorderGuest ? '10px' : '0px'
             }"
                 v-model="guest"
-                label="Kliknij mnie"
+                label="Guests and rooms"
                 :dense="dense"
                 borderless
                 color="orange"
@@ -82,25 +82,34 @@
                 <q-icon name="people" @click="showMenu = !showMenu" class="cursor-pointer" />
               </template>
             </q-input>
-
-            <q-menu
-                v-model="showMenu"
-                anchor="bottom right"
-                self="top right"
-            >
-              <q-card>
-                <q-card-section>
-                  <div class="text-h6">Twoje spersonalizowane okno</div>
-                </q-card-section>
-                <q-card-section>
-                  <!-- Tutaj wprowadź swój własny kontent -->
-                </q-card-section>
-              </q-card>
-            </q-menu>
+            <GuestsAndRooms
+              @showMenu = showMenu
+            />
           </div>
           <div class="t-h-full t-rounded-r-lg">
             <button class="t-px-14 t-h-full t-bg-dark-orange t-text-white t-rounded-r-lg">Search</button>
-
+          </div>
+        </div>
+        <div class="t-flex t-mx-auto t-w-7/12 t-my-8">
+          <div
+              v-for="(item, index) in filterOptions"
+              :key="index"
+              class="t-mx-2 t-w-full"
+          >
+            <label class="t-ml-2 t-mb-1 t-text-xs raleway t-text-font-black t-font-medium">
+              {{ item.label }}
+            </label>
+            <button
+                class="t-flex t-justify-between t-items-center t-w-full t-py-1 t-px-4 t-border t-border-dark-orange t-rounded-2xl"
+                @mouseenter="toggleMenu(item.name)"
+                @mouseleave="toggleMenu(item.name)"
+            >
+              <span class="t-text-sm t-tracking-widest">{{ item.defaultText }}</span>
+              <font-awesome-icon
+                  :icon="[isHoveredMenu[item.name] ? 'fas' : 'fas', isHoveredMenu[item.name] ? 'chevron-up' : 'chevron-down']"
+              />
+            </button>
+            <component :is="item.component" :show="show[item.name]" />
           </div>
         </div>
       </div>
@@ -113,8 +122,12 @@
 import NavBar from "@/components/home/NavBar";
 import PageLayout from "@/components/PageLayout";
 import {ref} from "vue";
+import GuestsAndRooms from "@/components/hotels/GuestsAndRooms";
+import PriceMenu from "@/components/hotels/PriceMenu";
+import HotelRatings from "@/components/hotels/HotelRatings";
+import PropertyType from "@/components/hotels/PropertyType";
 export default {
-  components: {PageLayout, NavBar},
+  components: {PropertyType, HotelRatings, PriceMenu, GuestsAndRooms, PageLayout, NavBar},
   setup(){
     const place = ref('');
     const text = ref('');
@@ -128,6 +141,51 @@ export default {
 
     const guest = ref("");
     const showMenu = ref(false);
+
+    const isHovered = ref(false);
+    const isHoveredHotel = ref(false);
+    const isHoveredType = ref(false);
+
+    const showPriceMenu = ref(false);
+    const showHotelRatings = ref(false);
+    const showPropertyType = ref(false);
+
+
+    const openPriceMenu = () => {
+      showPriceMenu.value = !showPriceMenu.value
+      if (showPriceMenu.value === true) {
+        isHovered.value = !isHovered.value
+      }
+    };
+
+    const openHotelRatings = () => {
+      showHotelRatings.value = !showHotelRatings.value
+      if (showHotelRatings.value === true) {
+        isHoveredHotel.value = !isHoveredHotel.value
+      }
+    }
+
+    const openPropertyType = () => {
+      showPropertyType.value = !showPropertyType.value
+      if (showPropertyType.value === true) {
+        isHoveredType.value = !isHoveredType.value
+      }
+    }
+    const filterOptions = [
+      { label: 'Price per night', name: 'PriceMenu', defaultText: '$0 - $600', component: 'PriceMenu' },
+      { label: 'Hotel ratings', name: 'HotelRatings', defaultText: 'None', component: 'HotelRatings' },
+      { label: 'Property type', name: 'PropertyType', defaultText: 'Hotel', component: 'PropertyType' },
+    ];
+
+    const show = ref({});
+    const isHoveredMenu = ref({});
+
+    const toggleMenu = (name) => {
+      show[name] = !show[name];
+      if (show[name]) {
+        isHoveredMenu[name] = !isHoveredMenu[name];
+      }
+    };
     return{
       place,
       dense,
@@ -139,7 +197,20 @@ export default {
       checkOutDate,
       guest,
       showBorderGuest,
-      showMenu
+      showMenu,
+      isHovered,
+      isHoveredHotel,
+      isHoveredType,
+      showPriceMenu,
+      openPriceMenu,
+      openHotelRatings,
+      openPropertyType,
+      showHotelRatings,
+      showPropertyType,
+      filterOptions,
+      toggleMenu,
+      show,
+      isHoveredMenu
     }
   }
 }
