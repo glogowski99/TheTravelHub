@@ -17,7 +17,7 @@
         </p>
         <router-link
             to="/"
-            class="t-mt-2 t-px-10 t-py-3 t-bg-background-button t-text-white t-shadow-md t-rounded-lg hover:-t-translate-y-1/4 t-transition-transform"
+            class="button"
         >
           Find More
         </router-link>
