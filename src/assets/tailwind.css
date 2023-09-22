@@ -3,3 +3,10 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.modalAcceptButton {
+    @apply t-py-2 t-pl-2 t-text-dark-orange
+}
+.button {
+    @apply t-mt-2 t-px-10 t-py-3 t-bg-background-button t-text-white t-shadow-md t-rounded-lg hover:-t-translate-y-1/4 t-transition-transform
+}
