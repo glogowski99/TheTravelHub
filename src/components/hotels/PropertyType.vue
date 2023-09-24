@@ -7,16 +7,22 @@
   >
     <q-card>
       <q-card-section>
-        <div class="text-h6">Set price range</div>
+        <div class="text-h6">Property type</div>
       </q-card-section>
       <q-card-section>
-        <div class="t-flex t-flex-col t-px-1">
-
-
-          <q-card-actions align="right" class="t-mt-3 t-text-sm">
-            <button class="t-mr-4 t-p-2">Reset</button>
-            <button class="modalAcceptButton">Apply</button>
-          </q-card-actions>
+        <div class="t-flex t-flex-col">
+          <div
+              class="t-flex t-items-center"
+              v-for="option in options"
+              :key="option.value"
+          >
+            <q-checkbox
+                color="orange-8"
+                v-model="option.checked"
+                @click="handleClick(option.value)"
+            />
+            <span class="t-ml-2">{{ option.label }}</span>
+          </div>
         </div>
       </q-card-section>
     </q-card>
@@ -24,13 +30,34 @@
 </template>
 
 <script>
+import {ref, computed} from "vue";
+import {useStore} from "vuex";
 
 export default {
   setup(){
+    const store = useStore()
+    const options = ref([
+      { value: "All", label: "All", checked: false },
+      { value: "Hotels", label: "Hotels", checked: false },
+      { value: "Apartments", label: "Apartments", checked: false },
+    ]);
+
+
+    const propertyType = computed(() => store.getters['hotels/getPropertyType']);
+
+    const handleClick = (selectedValue) => {
+      options.value.forEach((option) => {
+        option.checked = option.value === selectedValue;
+      });
+      store.commit('hotels/SET_PROPERTY_TYPE', selectedValue);
+    };
 
 
     return{
-
+      options,
+      handleClick,
+      store,
+      propertyType
     }
   }
 }

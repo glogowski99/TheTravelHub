@@ -1,3 +1,4 @@
+import './plugins/service-general'
 import { createApp } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
@@ -10,7 +11,9 @@ import quasarUserOptions from './quasar-user-options'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { faStar as faStarSolid } from '@fortawesome/free-solid-svg-icons'
+import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons'
 
-library.add(faChevronDown, faChevronUp)
+library.add(faChevronDown, faChevronUp, faStarSolid, faStarRegular)
 
 createApp(App).use(Quasar, quasarUserOptions).use(store).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app')

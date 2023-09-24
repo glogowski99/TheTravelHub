@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <div class="t-container t-mx-auto">
@@ -87,7 +88,7 @@
             />
           </div>
           <div class="t-h-full t-rounded-r-lg">
-            <button class="t-px-14 t-h-full t-bg-dark-orange t-text-white t-rounded-r-lg">Search</button>
+            <button @click="performSearch" class="t-px-14 t-h-full t-bg-dark-orange t-text-white t-rounded-r-lg">Search</button>
           </div>
         </div>
         <div class="t-flex t-mx-auto t-w-7/12 t-my-8">
@@ -113,7 +114,12 @@
           </div>
         </div>
       </div>
-
+      <div class="t-container t-mx-auto t-my-8">
+        <div v-for="(result, index) in hotels" :key="index" class="hotel-card">
+          <h3 v-if="result">{{ result.hotel_name_trans }}</h3>
+          <p v-if="result">{{ result.address }}</p>
+        </div>
+      </div>
     </page-layout>
   </div>
 </template>
@@ -121,14 +127,42 @@
 <script>
 import NavBar from "@/components/home/NavBar";
 import PageLayout from "@/components/PageLayout";
-import {ref} from "vue";
+import {ref,computed} from "vue";
 import GuestsAndRooms from "@/components/hotels/GuestsAndRooms";
 import PriceMenu from "@/components/hotels/PriceMenu";
 import HotelRatings from "@/components/hotels/HotelRatings";
 import PropertyType from "@/components/hotels/PropertyType";
+import {useStore} from "vuex";
 export default {
   components: {PropertyType, HotelRatings, PriceMenu, GuestsAndRooms, PageLayout, NavBar},
   setup(){
+
+    const store = useStore();
+    const hotels = computed(() => store.state.hotels);
+
+    const performSearch = async () => {
+      await store.dispatch('rapidHotels/updateSearchParams', {
+        locale: place.value,
+
+      });
+      await store.dispatch('rapidHotels/searchLocations', { name: place.value, locale: 'pl' });
+
+      const allLocations = store.getters['rapidHotels/allLocations'];
+      console.log("Wszystkie lokaliazje:", allLocations);
+
+      if (allLocations && allLocations.length > 0) {
+        const dest_id = allLocations[0]?.dest_id || '';
+        console.log("Dest ID:", dest_id);
+
+        await store.dispatch('rapidHotels/updateSearchParams', { dest_id });
+        await store.dispatch('rapidHotels/searchHotels');
+      } else {
+        console.error("Nie znaleziono lokalizacji");
+      }
+    };
+
+    const hotelRatingText = computed(() => store.state.hotels.hotelRating || 'None');
+    const hotelPropertyType = computed(() => store.state.hotels.propertyType || 'Hotels');
     const place = ref('');
     const text = ref('');
     const dense = ref(false);
@@ -151,6 +185,7 @@ export default {
     const showPropertyType = ref(false);
 
 
+
     const openPriceMenu = () => {
       showPriceMenu.value = !showPriceMenu.value
       if (showPriceMenu.value === true) {
@@ -171,11 +206,13 @@ export default {
         isHoveredType.value = !isHoveredType.value
       }
     }
-    const filterOptions = [
+    const filterOptions = ref([
       { label: 'Price per night', name: 'PriceMenu', defaultText: '$0 - $600', component: 'PriceMenu' },
-      { label: 'Hotel ratings', name: 'HotelRatings', defaultText: 'None', component: 'HotelRatings' },
-      { label: 'Property type', name: 'PropertyType', defaultText: 'Hotel', component: 'PropertyType' },
-    ];
+      { label: 'Hotel ratings', name: 'HotelRatings', defaultText: hotelRatingText, component: 'HotelRatings' },
+      { label: 'Property type', name: 'PropertyType', defaultText: hotelPropertyType, component: 'PropertyType' },
+    ]);
+
+
 
     const show = ref({});
     const isHoveredMenu = ref({});
@@ -197,8 +234,10 @@ export default {
       checkOutDate,
       guest,
       showBorderGuest,
+      performSearch,
       showMenu,
       isHovered,
+      hotels,
       isHoveredHotel,
       isHoveredType,
       showPriceMenu,
@@ -210,7 +249,10 @@ export default {
       filterOptions,
       toggleMenu,
       show,
-      isHoveredMenu
+      store,
+      isHoveredMenu,
+
+
     }
   }
 }

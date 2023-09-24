@@ -1,4 +1,6 @@
 import { createStore } from 'vuex'
+import hotels from "./hotels";
+import rapidHotels from "@/store/rapidHotels";
 
 export default createStore({
   state: {
@@ -10,5 +12,7 @@ export default createStore({
   actions: {
   },
   modules: {
+    hotels,
+    rapidHotels
   }
 })
