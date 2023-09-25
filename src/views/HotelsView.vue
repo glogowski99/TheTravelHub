@@ -154,7 +154,7 @@
         </div>
       </div>
     </page-layout>
-    <LoadingSpinner :is-loading="is-loading" />
+
   </div>
 </template>
 
@@ -162,14 +162,13 @@
 import { ref ,computed } from "vue";
 import { useQuasar } from 'quasar';
 import { useStore } from "vuex";
-
+import router from '@/router';
 import NavBar from "@/components/home/NavBar";
 import PageLayout from "@/components/PageLayout";
 import GuestsAndRooms from "@/components/hotels/GuestsAndRooms";
-import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default {
-  components: {LoadingSpinner, GuestsAndRooms, PageLayout, NavBar},
+  components: { GuestsAndRooms, PageLayout, NavBar},
   setup(){
     const $q = useQuasar();
     const store = useStore();
@@ -179,11 +178,11 @@ export default {
     console.log("Hotele w komponencie:", hotels.value);
 
     const hotelSearch = async () => {
-      //pobieranie dzisiejszej daty
+      // Pobieranie dzisiejszej daty
       const today = new Date();
       const selectedDate = new Date(checkInDate.value);
 
-      // porownywanie dat
+      // Porównywanie dat
       if (selectedDate < today) {
         $q.notify({
           color: 'negative',
@@ -191,8 +190,9 @@ export default {
           message: 'Hotels could not be found because the date is incorrect.',
           icon: 'report_problem'
         });
-        return; //
+        return;
       }
+
       await store.commit('rapidHotels/SET_SEARCH_PARAMS', {
         checkin_date: checkInDate.value,
         checkout_date: checkOutDate.value
@@ -210,6 +210,15 @@ export default {
       } else {
         console.error("Nie znaleziono lokalizacji");
       }
+      router.push({
+        name: 'hotels',
+        query: {
+          place: place.value,
+          checkInDate: checkInDate.value,
+          checkOutDate: checkOutDate.value,
+          guest: guest.value
+        }
+      });
     };
 
 
