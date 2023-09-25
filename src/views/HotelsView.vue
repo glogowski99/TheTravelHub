@@ -55,7 +55,7 @@
             }"
                 v-model="checkOutDate"
                 type="date"
-                label="Check in"
+                label="Check out"
                 :dense="dense"
                 borderless
                 color="orange"
@@ -88,10 +88,10 @@
             />
           </div>
           <div class="t-h-full t-rounded-r-lg">
-            <button @click="performSearch" class="t-px-14 t-h-full t-bg-dark-orange t-text-white t-rounded-r-lg">Search</button>
+            <button @click="hotelSearch" class="t-px-14 t-h-full t-bg-dark-orange t-text-white t-rounded-r-lg">Search</button>
           </div>
         </div>
-        <div class="t-flex t-mx-auto t-w-7/12 t-my-8">
+       <!-- <div class="t-flex t-mx-auto t-w-7/12 t-my-8">
           <div
               v-for="(item, index) in filterOptions"
               :key="index"
@@ -112,57 +112,109 @@
             </button>
             <component :is="item.component" :show="show[item.name]" />
           </div>
-        </div>
+        </div>-->
       </div>
-      <div class="t-container t-mx-auto t-my-8">
-        <div v-for="(result, index) in hotels" :key="index" class="hotel-card">
-          <h3 v-if="result">{{ result.hotel_name_trans }}</h3>
-          <p v-if="result">{{ result.address }}</p>
+      <div class="t-w-7/12 t-mx-auto t-my-8">
+        <p v-if="hotels && hotels.length > 0">List of hotels in the town: {{ place }}, with availability from {{ checkInDate }} to {{ checkOutDate }}</p>
+
+
+        <div v-for="(result, index) in hotels" :key="index" class="t-flex t-w-full t-my-10 t-h-80">
+
+          <div class="t-w-4/12 t-w-min-4/12 t">
+            <div :style="{ backgroundImage: `url(${result.max_photo_url})` }" class="image-background"></div>
+          </div>
+          <div class="t-flex t-flex-col t-justify-between t-ml-6 t-w-full">
+            <div class="t-w-full t-flex t-justify-between t-items-center">
+              <h5 v-if="result">{{ result.hotel_name }}</h5>
+              <div class="t-flex t-items-center t-justify-center">
+                <span class="t-mr-2 t-text-gray-700">Review score:</span>
+                <div class="t-w-8 t-h-8 t-bg-blue-500 t-rounded-lg t-flex t-items-center t-justify-center t-text-white t-font-semibold">
+                  <span>{{ result.review_score }} </span>
+                </div>
+              </div>
+            </div>
+            <div class="t-flex t-flex-col">
+              <div class="t-flex t-items-center ">
+                <span>{{ result.city }}, {{ result.district }}</span>
+                <span class="t-ml-4 t-text-xs t-text-gray-700"> {{ result.distance_to_cc }} km to city center</span>
+              </div>
+              <p v-if="result">Street: {{ result.address }}</p>
+            </div>
+
+            <div class="t-flex t-flex-col t-ml-6 t-border-l-2 t-border-dark-orange t-px-2 t-text-gray-800">
+              <span>{{ result.accommodation_type_name }}</span>
+              <span>{{ removeHtmlTags(result.unit_configuration_label) }}</span>
+            </div>
+            <p class="t-mt-4 t-font-semibold t-text-font-black t-tracking-wide">Price: {{ result.price_breakdown.gross_price }} {{result.price_breakdown.currency}}</p>
+
+            <a class="button t-text-center t-font-bold t-tracking-wider" :href="result.url"> Book </a>
+          </div>
+
+
         </div>
       </div>
     </page-layout>
+    <LoadingSpinner :is-loading="is-loading" />
   </div>
 </template>
 
 <script>
+import { ref ,computed } from "vue";
+import { useQuasar } from 'quasar';
+import { useStore } from "vuex";
+
 import NavBar from "@/components/home/NavBar";
 import PageLayout from "@/components/PageLayout";
-import {ref,computed} from "vue";
 import GuestsAndRooms from "@/components/hotels/GuestsAndRooms";
-import PriceMenu from "@/components/hotels/PriceMenu";
-import HotelRatings from "@/components/hotels/HotelRatings";
-import PropertyType from "@/components/hotels/PropertyType";
-import {useStore} from "vuex";
+import LoadingSpinner from "@/components/LoadingSpinner";
+
 export default {
-  components: {PropertyType, HotelRatings, PriceMenu, GuestsAndRooms, PageLayout, NavBar},
+  components: {LoadingSpinner, GuestsAndRooms, PageLayout, NavBar},
   setup(){
-
+    const $q = useQuasar();
     const store = useStore();
-    const hotels = computed(() => store.state.hotels);
+    const hotels = computed(() => store.state.rapidHotels.hotels);
+    const isLoading = computed(() => store.getters.isLoading);
 
-    const performSearch = async () => {
-      await store.dispatch('rapidHotels/updateSearchParams', {
-        locale: place.value,
+    console.log("Hotele w komponencie:", hotels.value);
 
+    const hotelSearch = async () => {
+      //pobieranie dzisiejszej daty
+      const today = new Date();
+      const selectedDate = new Date(checkInDate.value);
+
+      // porownywanie dat
+      if (selectedDate < today) {
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Hotels could not be found because the date is incorrect.',
+          icon: 'report_problem'
+        });
+        return; //
+      }
+      await store.commit('rapidHotels/SET_SEARCH_PARAMS', {
+        checkin_date: checkInDate.value,
+        checkout_date: checkOutDate.value
       });
-      await store.dispatch('rapidHotels/searchLocations', { name: place.value, locale: 'pl' });
 
+      await store.dispatch('rapidHotels/searchLocations', { name: place.value, locale: 'pl' });
       const allLocations = store.getters['rapidHotels/allLocations'];
-      console.log("Wszystkie lokaliazje:", allLocations);
 
       if (allLocations && allLocations.length > 0) {
         const dest_id = allLocations[0]?.dest_id || '';
-        console.log("Dest ID:", dest_id);
+        const localeFromOtherService = allLocations[0]?.locale || 'pl';
 
-        await store.dispatch('rapidHotels/updateSearchParams', { dest_id });
+        await store.dispatch('rapidHotels/updateSearchParams', { dest_id, locale: localeFromOtherService });
         await store.dispatch('rapidHotels/searchHotels');
       } else {
         console.error("Nie znaleziono lokalizacji");
       }
     };
 
-    const hotelRatingText = computed(() => store.state.hotels.hotelRating || 'None');
-    const hotelPropertyType = computed(() => store.state.hotels.propertyType || 'Hotels');
+
+   /* const hotelRatingText = computed(() => store.state.hotels.hotelRating || 'None');
+    const hotelPropertyType = computed(() => store.state.hotels.propertyType || 'Hotels');*/
     const place = ref('');
     const text = ref('');
     const dense = ref(false);
@@ -172,8 +224,11 @@ export default {
     const showBorderCheckIn = ref(false);
     const showBorderCheckOut = ref(false);
     const showBorderGuest = ref(false);
+    const searchParams = computed(() => store.state.rapidHotels.searchParams);
 
-    const guest = ref("");
+    const guest = computed(() => {
+      return `${searchParams.value.adults_number}, ${searchParams.value.room_number}`;
+    });
     const showMenu = ref(false);
 
     const isHovered = ref(false);
@@ -184,9 +239,11 @@ export default {
     const showHotelRatings = ref(false);
     const showPropertyType = ref(false);
 
+    console.log($q);
+    console.log($q.notify);
 
 
-    const openPriceMenu = () => {
+  /*  const openPriceMenu = () => {
       showPriceMenu.value = !showPriceMenu.value
       if (showPriceMenu.value === true) {
         isHovered.value = !isHovered.value
@@ -205,14 +262,12 @@ export default {
       if (showPropertyType.value === true) {
         isHoveredType.value = !isHoveredType.value
       }
-    }
-    const filterOptions = ref([
+    }*/
+ /*   const filterOptions = ref([
       { label: 'Price per night', name: 'PriceMenu', defaultText: '$0 - $600', component: 'PriceMenu' },
       { label: 'Hotel ratings', name: 'HotelRatings', defaultText: hotelRatingText, component: 'HotelRatings' },
       { label: 'Property type', name: 'PropertyType', defaultText: hotelPropertyType, component: 'PropertyType' },
-    ]);
-
-
+    ]);*/
 
     const show = ref({});
     const isHoveredMenu = ref({});
@@ -223,6 +278,10 @@ export default {
         isHoveredMenu[name] = !isHoveredMenu[name];
       }
     };
+    const removeHtmlTags = (text) => {
+      return text.replace(/<\/?[^>]+(>|$)/g, "");
+    };
+
     return{
       place,
       dense,
@@ -234,30 +293,33 @@ export default {
       checkOutDate,
       guest,
       showBorderGuest,
-      performSearch,
+      hotelSearch,
       showMenu,
       isHovered,
+      isLoading,
       hotels,
       isHoveredHotel,
       isHoveredType,
       showPriceMenu,
-      openPriceMenu,
-      openHotelRatings,
-      openPropertyType,
       showHotelRatings,
       showPropertyType,
-      filterOptions,
+      removeHtmlTags,
       toggleMenu,
       show,
       store,
       isHoveredMenu,
-
-
     }
   }
 }
 </script>
 
 <style scoped>
-
+.image-background {
+  width:100%;
+  height:100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+}
 </style>

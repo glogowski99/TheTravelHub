@@ -37,7 +37,7 @@
           </div>
           <q-card-actions align="right" class="t-mt-3 t-text-sm">
             <button @click="resetValue()" class="t-mr-4 t-p-2">Reset</button>
-            <button class="modalAcceptButton">Apply</button>
+            <button @click="applyChanges" class="modalAcceptButton">Apply</button>
           </q-card-actions>
         </div>
       </q-card-section>
@@ -47,25 +47,27 @@
 
 <script>
 import {ref} from "vue";
+import {useStore} from "vuex";
 
 export default {
   setup(){
+    const store = useStore()
     const adults = ref(0);
     const children = ref(0);
     const room = ref(0);
-
+    const applyChanges = () => {
+      store.dispatch('rapidHotels/updateSearchParams', {
+        adults_number: adults.value.toString(),
+        children_number: children.value.toString(),
+        room_number: room.value.toString()
+      });
+    };
     const items = [
       {
         label: 'Adults',
         value: adults,
         add: () => adults.value++,
         minus: () => adults.value = Math.max(adults.value - 1, 0)
-      },
-      {
-        label: 'Children',
-        value: children,
-        add: () => children.value++,
-        minus: () => children.value = Math.max(children.value - 1, 0)
       },
       {
         label: 'Room',
@@ -83,7 +85,8 @@ export default {
 
     return{
       items,
-      resetValue
+      resetValue,
+      applyChanges
     }
   }
 }

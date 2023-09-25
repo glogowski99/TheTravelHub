@@ -4,16 +4,16 @@ const state = {
     hotels: [],
     locations: [],
     searchParams: {
-        checkin_date: '2023-09-27',
+        checkin_date: '',
         dest_type: 'city',
         units: 'metric',
-        checkout_date: '2023-09-28',
-        adults_number: '2',
+        checkout_date: '',
         order_by: 'popularity',
         dest_id: '',
         filter_by_currency: 'PLN',
-        locale: 'pl',
-        room_number: '1'
+        locale: '',
+        adults_number: '2',
+        room_number: '1',
     }
 };
 
@@ -39,13 +39,19 @@ const actions = {
         console.log("Search Params:", state.searchParams);
         return BookingService.searchHotels(state.searchParams)
             .then(response => {
-                commit('SET_HOTELS', response.data);
+                commit('SET_HOTELS', response.data.result || []);
+                console.log("Otrzymane dane:", response.data);
                 console.log("Updated Hotels:", state.hotels);
                 return response;
             }, error => {
+                console.log("Błąd:", error);
+                if (error.response) {
+                    console.log("Dane z odpowiedzi:", error.response.data);
+                }
                 return error;
             });
     },
+
     searchLocations({ commit }, { name, locale }) {
         return BookingService.searchLocations(name, locale)
             .then(response => {

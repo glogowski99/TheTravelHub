@@ -40,7 +40,7 @@
 
           <q-card-actions align="right" class="t-mt-3 t-text-sm">
             <button @click="resetValue()" class="t-mr-4 t-p-2">Reset</button>
-            <button class="modalAcceptButton">Apply</button>
+            <button @click="applyFilters" class="modalAcceptButton">Apply</button>
           </q-card-actions>
         </div>
       </q-card-section>
@@ -50,14 +50,20 @@
 
 <script>
 import {reactive, ref} from "vue";
+import {useStore} from "vuex";
 
 export default {
   setup(){
+    const store = useStore();
     const adults = ref(0);
     const children = ref(0);
     const room = ref(0);
     const standard = ref(2)
-
+    const applyFilters = () => {
+      store.dispatch('rapidHotels/updateSearchParams', {
+        priceRange: { min: standard.value, max: 600 } // Zakładam, że max to 600
+      });
+    };
     const markLabels = reactive([
       {value:0, label: '$0'},
       {value:600, label: '$600'},
@@ -91,6 +97,7 @@ export default {
     }
 
     return{
+      applyFilters,
       items,
       resetValue,
       standard,
