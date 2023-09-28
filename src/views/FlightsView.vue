@@ -26,7 +26,7 @@
           </div>
           <div class="t-border-r t-px-1 t-ml-2">
             <q-input
-                v-model="flightsTo"
+                v-model="weatherPlace"
                 label="Flights to"
                 borderless
                 color="orange"
@@ -38,7 +38,7 @@
                 <q-icon name="place" />
               </template>
               <template v-slot:append>
-                <q-icon name="close" @click="text = ''" class="cursor-pointer" />
+                <q-icon name="close" @click="weatherPlace = ''" class="cursor-pointer" />
               </template>
             </q-input>
           </div>
