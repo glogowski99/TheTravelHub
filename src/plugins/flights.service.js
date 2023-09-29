@@ -1,4 +1,3 @@
-// FlightService.js
 import flights from './flights-general';
 
 class FlightService {

@@ -5,7 +5,7 @@
     </div>
     <page-layout>
       <div class="t-container t-mx-auto t-pt-40">
-        <div class="t-flex t-items-center t-mx-auto  t-pl-1 t-h-16 t-bg-white t-shadow  t-rounded-lg">
+        <div class="t-flex t-items-center t-mx-auto t-pl-1 t-h-16 t-bg-white t-shadow t-rounded-lg">
           <div class="t-border-r t-px-1">
             <q-input
                 v-model="flightsFrom"

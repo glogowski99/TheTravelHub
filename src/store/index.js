@@ -4,6 +4,8 @@ import rapidHotels from "@/store/rapidHotels";
 import loading from "./loading"
 import rapidFlights from "@/store/rapidFlights"
 import rapidWeather from "@/store/rapidWeather";
+import location from '@/store/location'
+import currency from '@/store/currency'
 export default createStore({
   state: {
   },
@@ -18,6 +20,8 @@ export default createStore({
     rapidHotels,
     loading,
     rapidWeather,
-    rapidFlights
+    rapidFlights,
+    location,
+    currency
   }
 })
