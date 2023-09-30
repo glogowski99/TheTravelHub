@@ -1,18 +1,22 @@
 <template>
   <div class="t-relative t-h-screen t-w-screen">
-    <div class="t-relative">
+    <div class="t-relative t-hidden lg:t-flex">
       <yellow-stein class="t-absolute t-right-0 t-top-0"/>
     </div>
-    <div class="t-flex t-pt-40 t-h-full t-container t-mx-auto">
-      <div class="t-flex t-flex-col t-items-start t-w-1/2 raleway">
+    <div class="t-flex t-container t-mx-auto t-pt-40 t-px-6 lg:t-px-0 t-h-full">
+      <div class="t-flex t-flex-col t-items-start t-w-full lg:t-w-1/2 raleway">
         <p class="t-font-bold t-text-base t-tracking-wider t-text-dark-orange t-uppercase">
           Find all information in one place
         </p>
-        <h1 class="t-font-bold t-tracking-wide t-text-font-black">
+        <h1 class="t-hidden lg:t-flex t-font-bold t-tracking-wide t-text-font-black">
           <span class="t-text-dark-orange">Travel</span>
-          with the information <br> you need
+          with the information <br class="t-hidden lg:t-flex"> you need
         </h1>
-        <p class="t-mt-8 t-text-black t-text-sm t-tracking-wide">
+        <p class="lg:t-hidden t-font-bold t-text-font-black t-tracking-wide t-text-[55px]">
+          <span class="t-text-dark-orange">Travel</span>
+          with the information you need
+        </p>
+        <p class="t-mt-8 t-text-xs t-text-black lg:t-text-sm t-tracking-wide">
           Search for information about the weather in a given country, <br> its currency or see the best hotels and flights.
         </p>
         <router-link
@@ -26,7 +30,7 @@
         <img
             alt="Tourist"
             src="@/assets/home-page-image.png"
-            class="t-absolute t-top-0 t-left-0 t-right-0 t-bottom-0 t-h-[500px]"
+            class="t-absolute t-top-0 t-left-0 t-right-0 t-bottom-0 t-h-[500px] t-hidden lg:t-flex"
         />
       </div>
     </div>

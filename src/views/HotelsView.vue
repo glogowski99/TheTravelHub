@@ -5,9 +5,11 @@
       <nav-bar/>
     </div>
     <page-layout>
-      <div class="t-container t-mx-auto t-pt-40">
-        <div class="t-flex t-items-center t-mx-auto t-w-7/12 t-pl-1 t-h-16 t-bg-white t-shadow  t-rounded-lg">
-          <div class="t-border-r t-px-1">
+      <div class="t-container t-mx-auto t-pt-40 t-px-8 lg:t-px-0">
+        <div
+            class="t-flex t-items-center t-flex-wrap lg:t-flex-nowrap t-flex-col lg:t-flex-row t-mx-auto t-pl-2 t-pr-2 lg:t-pr-0 t-h-full lg:t-h-16 t-bg-white t-shadow t-rounded-lg"
+        >
+          <div class="lg:t-border-r lg:t-px-1 t-w-full">
             <q-input
                 :style="{
               border: showBorder ? '1px solid #FF6C01' : 'none' ,
@@ -29,9 +31,9 @@
               </template>
             </q-input>
           </div>
-          <div class="t-mx-2">
+          <div class="lg:t-mx-2 t-w-full">
             <q-input
-                class="t-px-2"
+                class="lg:t-px-2 t-w-full"
                 :style="{
               border: showBorderCheckIn ? '1px solid #FF6C01' : 'none' ,
               'border-radius': showBorderCheckIn ? '10px' : '0px'
@@ -46,9 +48,9 @@
                 @blur="showBorderCheckIn = false"
             />
           </div>
-          <div class="t-border-r t-px-1">
+          <div class="t-border-r lg:t-px-1 t-w-full">
             <q-input
-                class="t-px-2 "
+                class="lg:t-px-2"
                 :style="{
               border: showBorderCheckOut ? '1px solid #FF6C01' : 'none' ,
               'border-radius': showBorderCheckOut ? '10px' : '0px'
@@ -63,7 +65,7 @@
                 @blur="showBorderCheckOut = false"
             />
           </div>
-          <div class="t-px-2">
+          <div class="lg:t-px-2 t-w-full">
             <q-input
                 :style="{
               border: showBorderGuest ? '1px solid #FF6C01' : 'none' ,
@@ -77,7 +79,7 @@
                 @focus="showBorderGuest = true"
                 @blur="showBorderGuest = false"
                 @click="showMenu = !showMenu"
-                class="t-px-2 t-cursor-pointer"
+                class="lg:t-px-2 t-cursor-pointer t-w-full"
             >
               <template v-slot:append>
                 <q-icon name="people" @click="showMenu = !showMenu" class="cursor-pointer" />
@@ -87,8 +89,8 @@
               @showMenu = showMenu
             />
           </div>
-          <div class="t-h-full t-rounded-r-lg">
-            <button @click="hotelSearch" class="t-px-14 t-h-full t-bg-dark-orange t-text-white t-rounded-r-lg">Search</button>
+          <div class="t-mt-2 lg:t-mt-0 lg:t-h-full t-w-full lg:t-w-1/2 t-rounded-l-lg  t-rounded-r-lg lg:t-rounded-l-none">
+            <button @click="hotelSearch" class="t-w-full lg:t-px-14 t-h-10 lg:t-h-full t-bg-dark-orange t-text-white t-rounded-l-lg lg:t-rounded-l-none t-rounded-r-lg">Search</button>
           </div>
         </div>
        <!-- <div class="t-flex t-mx-auto t-w-7/12 t-my-8">
@@ -114,16 +116,17 @@
           </div>
         </div>-->
       </div>
-      <div class="t-w-7/12 t-mx-auto t-my-8">
+      <div class="t-w-full lg:t-w-7/12 t-px-6 lg:t-px-0 t-mx-auto t-my-8">
         <p v-if="hotels && hotels.length > 0">List of hotels in the town: {{ place }}, with availability from {{ checkInDate }} to {{ checkOutDate }}</p>
-
-
-        <div v-for="(result, index) in hotels" :key="index" class="t-flex t-w-full t-my-10 t-h-80">
-
-          <div class="t-w-4/12 t-w-min-4/12 t">
+        <div
+            v-for="(result, index) in hotels"
+            :key="index"
+            class="t-flex t-flex-col lg:t-flex-row t-w-full t-my-10 t-h-full lg:t-h-80"
+        >
+          <div class="t-w-full lg:t-w-4/12 t-w-min-4/12 t-h-80">
             <div :style="{ backgroundImage: `url(${result.max_photo_url})` }" class="image-background"></div>
           </div>
-          <div class="t-flex t-flex-col t-justify-between t-ml-6 t-w-full">
+          <div class="t-flex t-flex-col t-justify-between t-mt-4 lg:t-mt-0 lg:t-ml-6 t-w-full">
             <div class="t-w-full t-flex t-justify-between t-items-center">
               <h5 v-if="result">{{ result.hotel_name }}</h5>
               <div class="t-flex t-items-center t-justify-center">

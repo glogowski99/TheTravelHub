@@ -4,9 +4,11 @@
       <nav-bar/>
     </div>
     <page-layout>
-      <div class="t-container t-mx-auto t-pt-40">
-        <div class="t-flex t-items-center t-mx-auto t-pl-1 t-h-16 t-bg-white t-shadow t-rounded-lg">
-          <div class="t-border-r t-px-1">
+      <div class="t-container t-mx-auto t-pt-40 t-px-8 lg:t-px-0">
+        <div
+            class="t-flex t-items-center t-flex-wrap lg:t-flex-nowrap t-flex-col lg:t-flex-row t-mx-auto t-pl-2 t-pr-2 lg:t-pr-0 t-h-full lg:t-h-16 t-bg-white t-shadow t-rounded-lg"
+        >
+          <div class="t-w-full lg:t-px-1 lg:t-border-r">
             <q-input
                 v-model="flightsFrom"
                 label="Flights from"
@@ -24,7 +26,7 @@
               </template>
             </q-input>
           </div>
-          <div class="t-border-r t-px-1 t-ml-2">
+          <div class="t-w-full lg:t-border-r lg:t-px-1 lg:t-ml-2">
             <q-input
                 v-model="weatherPlace"
                 label="Flights to"
@@ -42,9 +44,9 @@
               </template>
             </q-input>
           </div>
-          <div class="t-mx-2">
+          <div class="lg:t-mx-2 t-w-full">
             <q-input
-                class="t-px-2"
+                class="lg:t-px-2 t-w-full"
                 v-model="dateFlight"
                 type="date"
                 label="Date"
@@ -55,9 +57,9 @@
                 @blur="activeInput = ''"
             />
           </div>
-          <div class="t-border-r t-px-1">
+          <div class="t-w-full lg:t-px-1 lg:t-border-r">
             <q-input
-                class="t-px-2 "
+                class="lg:t-px-2 t-w-full"
                 v-model="returnDateFlight"
                 type="date"
                 label="Return Date"
@@ -68,14 +70,14 @@
                 @blur="activeInput = ''"
             />
           </div>
-          <div class="t-px-2">
+          <div class="t-w-full lg:t-px-2">
             <q-input
                 v-model="passengers"
                 label="Number of passengers"
                 borderless
                 color="orange"
                 @click="showMenu = !showMenu"
-                class="t-px-2 t-cursor-pointer"
+                class="lg:t-px-2 t-cursor-pointer"
                 :class="{ 'active-border': activeInput === 'passengers' }"
                 @focus="activeInput = 'passengers'"
                 @blur="activeInput = ''"
@@ -89,47 +91,47 @@
                 @showMenu = showMenu
             />
           </div>
-          <div class="t-px-2 t-w-40">
+          <div class="lg:t-px-2 t-w-full lg:t-w-40">
             <q-select
                 v-model="chosenClassOfService"
                 :options="classOfService"
                 label="Class of service"
                 color="orange"
                 borderless
-                class="t-px-2 t-cursor-pointer"
+                class="lg:t-w-40 lg:t-px-2 t-cursor-pointer"
                 :class="{ 'active-border': activeInput === 'chosenClassOfService' }"
                 @focus="activeInput = 'chosenClassOfService'"
                 @blur="activeInput = ''"
             />
           </div>
-          <div class="t-px-2 t-w-40">
+          <div class="lg:t-px-2 t-w-full lg:t-w-40">
             <q-select
                 v-model="chosenItineraryType"
                 :options="itineraryType"
                 label="Trip type"
                 color="orange"
                 borderless
-                class="t-px-2 t-cursor-pointer"
+                class="lg:t-w-40 lg:t-px-2 t-cursor-pointer"
                 :class="{ 'active-border': activeInput === 'chosenItineraryType' }"
                 @focus="activeInput = 'chosenItineraryType'"
                 @blur="activeInput = ''"
             />
           </div>
-          <div class="t-px-2 t-w-40">
+          <div class="lg:t-px-2 t-w-full lg:t-w-40">
             <q-select
                 v-model="chosenSortOrders"
                 :options="sortOrders"
                 label="Sort Order"
                 color="orange"
                 borderless
-                class="t-px-2 t-cursor-pointer"
+                class="lg:t-w-40 lg:t-px-2 t-cursor-pointer"
                 :class="{ 'active-border': activeInput === 'chosenSortOrders' }"
                 @focus="activeInput = 'chosenSortOrders'"
                 @blur="activeInput = ''"
             />
           </div>
-          <div class="t-h-full t-rounded-r-lg">
-            <button @click="flightsSearch" class="t-px-6 t-h-full t-bg-dark-orange t-text-white t-rounded-r-lg">Search</button>
+          <div class="t-mt-2 lg:t-mt-0 lg:t-h-full t-w-full lg:t-w-1/2 t-rounded-l-lg  t-rounded-r-lg lg:t-rounded-l-none">
+            <button @click="flightsSearch" class="t-w-full lg:t-px-14 t-h-10 lg:t-h-full t-bg-dark-orange t-text-white t-rounded-l-lg lg:t-rounded-l-none t-rounded-r-lg">Search</button>
           </div>
         </div>
         <div v-for="(result, index) in flights" :key="index" class="">

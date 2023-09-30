@@ -1,6 +1,6 @@
 <template>
   <div class="t-relative">
-    <yellow-stein class="t-absolute t-left-[-20%] t-top-0 t-rotate-[220deg]"/>
+    <yellow-stein class="t-absolute t-left-[-20%] t-top-0 t-rotate-[220deg] t-hidden lg:t-flex"/>
     <div class="t-container t-mx-auto">
       <p class="t-text-center raleway">
         something for you
@@ -8,9 +8,9 @@
       <h3 class="t-mt-2 t-text-center t-text-neutral-800 t-font-semibold t-capitalize">
         find something for yourself
       </h3>
-      <div class="t-flex t-items-center t-justify-between t-my-20">
+      <div class="t-flex t-flex-col lg:t-flex-row t-items-center t-justify-between t-my-20">
         <div
-            class="t-flex t-flex-col t-items-center t-justify-between t-p-6 t-w-72 t-h-72 t-bg-white t-rounded-lg t-shadow"
+            class="t-flex t-flex-col t-items-center t-justify-between t-mt-8 lg:t-mt-0 t-p-6 t-w-72 t-h-72 t-bg-white t-rounded-lg t-shadow"
             v-for="(item, index) in boxItems"
             :key="index"
         >

@@ -37,7 +37,9 @@ const mutations = {
 
     SET_CONVERSION_RESULT(state, result) {
         state.conversionResult = result;
-    },
+        state.conversionResult.info.rate = parseFloat(result.info.rate).toFixed(2); // Zaokrąglenie do 2 miejsc po przecinku
+    }
+
 };
 
 export default {

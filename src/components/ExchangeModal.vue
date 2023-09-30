@@ -25,27 +25,20 @@
             />
           </div>
           <font-awesome-icon :icon="['fas', 'retweet']" class="t-mx-6"/>
-          <div class="t-flex">
-            <q-input
-                v-model="finalCurrencyValue"
-                type="number"
-                color="orange-8"
-                min="0"
-                class="t-w-1/2"
-                label="Quantity"
-            />
+          <div class="t-flex t-w-1/2">
             <q-select
                 v-model="finalCurrency"
                 :options="currencySymbols"
                 label="Symbol"
-                class="t-ml-2 t-w-1/2"
+                class="t-ml-2 t-w-full"
                 color="orange-8"
             />
           </div>
 
         </div>
         <div class="t-flex t-flex-col t-items-center t-mt-4">
-          <button class="modalAcceptButton">Exchange</button>
+          <button class="modalAcceptButton" @click="exchangeCurrency">Exchange</button>
+
           <div class="t-flex">
             <p>{{ selectCurrencyValue }}{{ selectCurrency }}</p>
             <p class="t-mx-4">=</p>
@@ -85,6 +78,26 @@ export default {
       const symbols = response ? response.symbols : null;
       return symbols ? Object.keys(symbols) : [];
     });
+
+    const exchangeCurrency = async () => {
+      if (selectCurrencyValue.value > 0 && selectCurrency.value && finalCurrency.value) {
+        await store.dispatch("currency/convertCurrency", {
+          from: selectCurrency.value,
+          to: finalCurrency.value,
+          amount: selectCurrencyValue.value
+        });
+        const conversionResult = store.getters["currency/getConversionResult"];
+        finalCurrencyValue.value = (conversionResult.result).toFixed(2);
+      } else {
+        $q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Please fill in all the fields correctly',
+          icon: 'report_problem'
+        });
+      }
+    };
+
     watch(selectCurrencyValue, (newVal) => {
       if (newVal < 0) {
         selectCurrencyValue.value = 0;
@@ -117,7 +130,7 @@ export default {
       finalCurrencyValue,
       finalCurrency,
       options,
-
+      exchangeCurrency,
       options2,
       currencySymbols
     }

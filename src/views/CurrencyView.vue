@@ -4,12 +4,12 @@
         <nav-bar/>
     </div>
     <page-layout>
-      <div class="t-container t-mx-auto t-pt-40">
-        <div class="t-flex t-items-center t-mx-auto t-w-3/12 t-pl-1 t-h-16 t-bg-white t-shadow t-rounded-lg">
+      <div class="t-container t-mx-auto t-pt-40 t-px-4 lg:t-px-0">
+        <div class="t-flex t-items-center t-mx-auto t-w-full lg:t-w-7/12 2xl:t-w-3/12 t-pl-1 t-h-16 t-bg-white t-shadow  t-rounded-lg">
           <div class="t-border-r t-px-1">
             <q-input
                 v-model="place"
-                label="City"
+                label="Country"
                 borderless
                 color="orange"
                 :class="{ 'active-border': activeInput === 'place' }"
