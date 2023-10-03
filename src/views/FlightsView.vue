@@ -9,65 +9,29 @@
             class="t-flex t-items-center t-flex-wrap lg:t-flex-nowrap t-flex-col lg:t-flex-row t-mx-auto t-pl-2 t-pr-2 lg:t-pr-0 t-h-full lg:t-h-16 t-bg-white t-shadow t-rounded-lg"
         >
           <div class="t-w-full lg:t-px-1 lg:t-border-r">
-            <q-input
+            <PlaceInput
                 v-model="flightsFrom"
                 label="Flights from"
-                borderless
-                color="orange"
-                :class="{ 'active-border': activeInput === 'flightsFrom' }"
-                @focus="activeInput = 'flightsFrom'"
-                @blur="activeInput = ''"
-            >
-              <template v-slot:prepend>
-                <q-icon name="place" />
-              </template>
-              <template v-slot:append>
-                <q-icon name="close" @click="text = ''" class="cursor-pointer" />
-              </template>
-            </q-input>
+            />
           </div>
           <div class="t-w-full lg:t-border-r lg:t-px-1 lg:t-ml-2">
-            <q-input
-                v-model="weatherPlace"
+            <PlaceInput
+                v-model="flightsTo"
                 label="Flights to"
-                borderless
-                color="orange"
-                :class="{ 'active-border': activeInput === 'flightsTo' }"
-                @focus="activeInput = 'flightsTo'"
-                @blur="activeInput = ''"
-            >
-              <template v-slot:prepend>
-                <q-icon name="place" />
-              </template>
-              <template v-slot:append>
-                <q-icon name="close" @click="weatherPlace = ''" class="cursor-pointer" />
-              </template>
-            </q-input>
+            />
           </div>
           <div class="lg:t-mx-2 t-w-full">
-            <q-input
-                class="lg:t-px-2 t-w-full"
+            <DateInput
                 v-model="dateFlight"
-                type="date"
                 label="Date"
-                borderless
-                color="orange"
-                :class="{ 'active-border': activeInput === 'dateFlight' }"
-                @focus="activeInput = 'dateFlight'"
-                @blur="activeInput = ''"
+                class="lg:t-px-2 t-w-full"
             />
           </div>
           <div class="t-w-full lg:t-px-1 lg:t-border-r">
-            <q-input
-                class="lg:t-px-2 t-w-full"
+            <DateInput
                 v-model="returnDateFlight"
-                type="date"
                 label="Return Date"
-                borderless
-                color="orange"
-                :class="{ 'active-border': activeInput === 'returnDateFlight' }"
-                @focus="activeInput = 'returnDateFlight'"
-                @blur="activeInput = ''"
+                class="lg:t-px-2 t-w-full"
             />
           </div>
           <div class="t-w-full lg:t-px-2">
@@ -78,9 +42,6 @@
                 color="orange"
                 @click="showMenu = !showMenu"
                 class="lg:t-px-2 t-cursor-pointer"
-                :class="{ 'active-border': activeInput === 'passengers' }"
-                @focus="activeInput = 'passengers'"
-                @blur="activeInput = ''"
             >
               <template v-slot:append>
                 <q-icon name="people" @click="showMenu = !showMenu" class="cursor-pointer" />
@@ -99,9 +60,6 @@
                 color="orange"
                 borderless
                 class="lg:t-w-40 lg:t-px-2 t-cursor-pointer"
-                :class="{ 'active-border': activeInput === 'chosenClassOfService' }"
-                @focus="activeInput = 'chosenClassOfService'"
-                @blur="activeInput = ''"
             />
           </div>
           <div class="lg:t-px-2 t-w-full lg:t-w-40">
@@ -112,9 +70,6 @@
                 color="orange"
                 borderless
                 class="lg:t-w-40 lg:t-px-2 t-cursor-pointer"
-                :class="{ 'active-border': activeInput === 'chosenItineraryType' }"
-                @focus="activeInput = 'chosenItineraryType'"
-                @blur="activeInput = ''"
             />
           </div>
           <div class="lg:t-px-2 t-w-full lg:t-w-40">
@@ -125,9 +80,6 @@
                 color="orange"
                 borderless
                 class="lg:t-w-40 lg:t-px-2 t-cursor-pointer"
-                :class="{ 'active-border': activeInput === 'chosenSortOrders' }"
-                @focus="activeInput = 'chosenSortOrders'"
-                @blur="activeInput = ''"
             />
           </div>
           <div class="t-mt-2 lg:t-mt-0 lg:t-h-full t-w-full lg:t-w-1/2 t-rounded-l-lg  t-rounded-r-lg lg:t-rounded-l-none">
@@ -150,8 +102,10 @@ import PageLayout from "@/components/PageLayout";
 import PassengersMenu from "@/components/flights/PassengersMenu";
 import {useStore} from "vuex";
 import {useQuasar} from "quasar";
+import DateInput from "@/components/inputs/DateInput";
+import PlaceInput from "@/components/inputs/PlaceInput";
 export default {
-  components: {PassengersMenu, PageLayout, NavBar},
+  components: {PlaceInput, DateInput, PassengersMenu, PageLayout, NavBar},
   setup(){
     const $q = useQuasar();
     const store = useStore();
@@ -206,7 +160,6 @@ export default {
     }
 
 
-    const activeInput = ref('');
     const flightsFrom = ref('');
     const flightsTo = ref('');
     const dateFlight = ref('');
@@ -260,7 +213,6 @@ export default {
       returnDateFlight,
       passengers,
       showMenu,
-      activeInput,
       store,
     }
   }

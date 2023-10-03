@@ -1,13 +1,17 @@
 <template>
-  <q-dialog :model-value="exchange" @update:modelValue="$emit('update:exchange', $event)">
+  <q-dialog
+      :model-value="exchange"
+      @update:modelValue="$emit('update:exchange', $event)"
+  >
     <q-card>
       <q-card-section>
-        <div class="text-h6">Check the currency in the country you are traveling to</div>
+        <div class="text-h6">
+          Check the currency in the country you are traveling to
+        </div>
       </q-card-section>
-
       <q-card-section class="q-pt-none">
-        <div class="t-flex t-items-center t-justify-between">
-          <div class="t-flex">
+        <div class="flex-center-between">
+          <div class="t-flex t-w-1/2">
             <q-input
               v-model="selectCurrencyValue"
               class="t-w-1/2"
@@ -34,22 +38,28 @@
                 color="orange-8"
             />
           </div>
-
         </div>
         <div class="t-flex t-flex-col t-items-center t-mt-4">
-          <button class="modalAcceptButton" @click="exchangeCurrency">Exchange</button>
-
           <div class="t-flex">
             <p>{{ selectCurrencyValue }}{{ selectCurrency }}</p>
             <p class="t-mx-4">=</p>
             <p>{{ finalCurrencyValue }}{{ finalCurrency }}</p>
           </div>
-
+          <button
+              class="modalAcceptButton"
+              @click="exchangeCurrency"
+          >
+            Exchange
+          </button>
         </div>
       </q-card-section>
-
       <q-card-actions align="right">
-        <button class="modalAcceptButton" @click="$emit('close')">Close</button>
+        <button
+            class="modalAcceptButton"
+            @click="$emit('close')"
+        >
+          Close
+        </button>
       </q-card-actions>
     </q-card>
 

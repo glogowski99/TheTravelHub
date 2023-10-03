@@ -5,29 +5,16 @@
     </div>
     <page-layout>
       <div class="t-container t-mx-auto t-pt-40 t-px-4 lg:t-px-0">
-        <div class="t-flex t-items-center t-mx-auto t-w-full lg:t-w-7/12 2xl:t-w-3/12 t-pl-1 t-h-16 t-bg-white t-shadow  t-rounded-lg">
-          <div class="t-border-r t-px-1">
-            <q-input
+        <div class="main-box">
+          <div class="t-px-1 t-w-full">
+            <PlaceInput
                 v-model="weatherPlace"
-                label="Place"
-                borderless
-                color="orange"
-                :class="{ 'active-border': activeInput === 'weatherPlace' }"
-                @focus="activeInput = 'weatherPlace'"
-                @blur="activeInput = ''"
-            >
-              <template v-slot:prepend>
-                <q-icon name="place" />
-              </template>
-              <template v-slot:append>
-                <q-icon name="close" @click="weatherPlace = ''" class="cursor-pointer" />
-              </template>
-            </q-input>
+                label="City"
+            />
           </div>
           <div class="t-h-full t-rounded-r-lg">
-            <button @click="fetchWeatherData" class="t-px-12 t-h-full t-bg-dark-orange t-text-white t-rounded-r-lg">Search</button>
+            <button @click="fetchWeatherData" class="button-form">Search</button>
           </div>
-
         </div>
         <div
             v-if="weatherData"
@@ -36,43 +23,41 @@
           <p class="raleway">Weather in
             <span class="t-font-bold">{{ weatherData.location.name }}, {{weatherData.location.timezone }}</span>
           </p>
-          <div class="t-flex t-flex-wrap t-items-center t-justify-between t-mx-10">
+          <div class="flex-center-between t-flex-wrap t-mx-10">
             <div
-                v-for="(day, index) in weatherData.forecast.items"
-                :key="index"
-                class="t-mt-6 t-mx-4"
+                v-for="day in 14"
+                :key="day"
+                class="t-shadow-lg t-px-4 t-py-2 t-rounded-md t-m-6"
             >
-              <p class="t-font-bold">{{ day.date }}</p>
-              <p>Temperature: {{ day.temperature.min }}°C - {{ day.temperature.max }}°C</p>
-              <p>Wind: {{ day.wind.min }}{{day.wind.unit}} - {{ day.wind.max }}{{day.wind.unit}}</p>
-              <p>Condition: {{ day.weather.text }}</p>
+              <p class="t-uppercase t-font-bold t-text-brown-font">
+                #day {{ day }}
+              </p>
+              <WeatherInfo
+                  :weather="weatherData.forecast.items[day - 1]"
+              />
             </div>
           </div>
-
-
         </div>
-
-
       </div>
     </page-layout>
-
   </div>
 </template>
 
 <script>
-import NavBar from "@/components/home/NavBar";
-import PageLayout from "@/components/PageLayout";
 import {ref, computed} from "vue";
 import { useStore } from 'vuex';
+import router from '@/router';
+import NavBar from "@/components/home/NavBar";
+import PageLayout from "@/components/PageLayout";
+import PlaceInput from "@/components/inputs/PlaceInput";
+import WeatherInfo from "@/components/weather/WeatherInfo";
 export default {
-  components: {PageLayout, NavBar},
+  components: {WeatherInfo, PlaceInput, PageLayout, NavBar},
   setup(){
     const store = useStore();
     const weatherPlace = ref('');
     const activeInput = ref('');
-
     const weatherData = computed(() => store.getters['rapidWeather/getWeatherData']);
-
     const fetchWeatherData = async () => {
       console.log("Pobieranie...");
       if (weatherPlace.value) {
@@ -81,8 +66,13 @@ export default {
       } else {
         console.log("No city");
       }
+      router.push({
+        name: 'weather',
+        query: {
+          city: weatherPlace.value,
+        }
+      });
     };
-
     return{
       weatherPlace,
       activeInput,
@@ -92,10 +82,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.active-border {
-  border: 1px solid #FF6C01;
-  border-radius: 10px;
-}
-</style>
