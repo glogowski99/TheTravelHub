@@ -1,6 +1,5 @@
 <template>
   <div class="t-relative">
-    <yellow-stein class="t-absolute t-left-[-20%] t-top-0 t-rotate-[220deg] t-hidden lg:t-flex"/>
     <div class="t-container t-mx-auto">
       <p class="t-text-center raleway">
         something for you
@@ -37,10 +36,8 @@
 
 <script>
 import {ref} from "vue";
-import YellowStein from "@/components/home/YellowStein";
 
 export default {
-  components: {YellowStein},
   setup(){
     const boxItems = ref([
       {

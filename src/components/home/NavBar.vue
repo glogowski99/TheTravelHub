@@ -1,7 +1,7 @@
 <template>
-  <div class="t-fixed t-top-0 t-left-50 t-container t-mx-auto t-flex t-items-center t-justify-between t-h-max-32 t-h-20 t-z-10 t-bg-[#EDEDED]">
-    <div class="t-flex t-justify-between t-flex-col lg:t-flex-row t-w-full t-h-full">
-      <div class="t-flex t-justify-between t-w-full t-h-full">
+  <div class="t-fixed t-top-0 t-left-50 t-container t-mx-auto t-flex t-items-center t-justify-between t-h-max-32 t-h-20 t-z-10 ">
+    <div class="t-flex t-justify-between t-flex-col lg:t-flex-row h-w-full">
+      <div class="t-flex t-justify-between h-w-full">
         <router-link to="/" class="t-relative t-h-full t-w-56">
           <img src="@/assets/logo-travel.png" alt="Logo The Travel Hub" class="t-absolute t-left-0 t-top-0 t-right-0 t-bottom-0"/>
         </router-link>
@@ -19,54 +19,22 @@
         </div>
       </div>
     </div>
-    <div class="t-flex t-flex-col lg:t-flex-row">
-      <div
-          v-for="(item, index) in navItems"
-          :key="index"
-          class="t-hidden lg:t-flex"
-      >
-        <router-link
-            :to="{ name: item.navRouter }"
-            class="t-px-4 t-py-2 t-text-xl t-text-brown-font t-font-medium raleway t-tracking-wide"
-            :class="{ 't-mr-10': index < 3 }"
-        >
-          {{ item.navName }}
-        </router-link>
-      </div>
-    </div>
+      <router-links/>
   </div>
 </template>
 
   <script>
 import { ref } from "vue";
+import RouterLinks from "@/components/home/nav/RouterLinks";
 export default {
+  components: {RouterLinks},
   setup() {
     const isOpen = ref(false);
-    const navItems = ref([
-      {
-        navName: 'Hotels',
-        navRouter: 'hotels',
-      },
-      {
-        navName: 'Flights',
-        navRouter: 'flights',
-      },
-      {
-        navName: 'Weather',
-        navRouter: 'weather',
-      },
-      {
-        navName: 'Currency',
-        navRouter: 'currency',
-      }
-    ]);
-
     const toggleMenu = () => {
       isOpen.value = !isOpen.value;
     };
 
     return {
-      navItems,
       isOpen,
       toggleMenu
     };
