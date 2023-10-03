@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <div class="t-container t-mx-auto">
@@ -11,17 +10,13 @@
         >
           <div class="lg:t-border-r lg:t-px-1 t-w-full">
             <q-input
-                :style="{
-              border: showBorder ? '1px solid #FF6C01' : 'none' ,
-              'border-radius': showBorder ? '10px' : '0px'
-            }"
-                      v-model="place"
-                      label="Place"
-                      :dense="dense"
-                      borderless
-                      color="orange"
-                      @focus="showBorder = true"
-                      @blur="showBorder = false"
+                v-model="place"
+                label="Place"
+                :dense="dense"
+                borderless
+                color="orange"
+                @focus="showBorder = true"
+                @blur="showBorder = false"
             >
               <template v-slot:prepend>
                 <q-icon name="place" />
@@ -34,50 +29,32 @@
           <div class="lg:t-mx-2 t-w-full">
             <q-input
                 class="lg:t-px-2 t-w-full"
-                :style="{
-              border: showBorderCheckIn ? '1px solid #FF6C01' : 'none' ,
-              'border-radius': showBorderCheckIn ? '10px' : '0px'
-            }"
                 v-model="checkInDate"
                 type="date"
                 label="Check in"
                 :dense="dense"
                 borderless
                 color="orange"
-                @focus="showBorderCheckIn = true"
-                @blur="showBorderCheckIn = false"
             />
           </div>
           <div class="t-border-r lg:t-px-1 t-w-full">
             <q-input
                 class="lg:t-px-2"
-                :style="{
-              border: showBorderCheckOut ? '1px solid #FF6C01' : 'none' ,
-              'border-radius': showBorderCheckOut ? '10px' : '0px'
-            }"
                 v-model="checkOutDate"
                 type="date"
                 label="Check out"
                 :dense="dense"
                 borderless
                 color="orange"
-                @focus="showBorderCheckOut = true"
-                @blur="showBorderCheckOut = false"
             />
           </div>
           <div class="lg:t-px-2 t-w-full">
             <q-input
-                :style="{
-              border: showBorderGuest ? '1px solid #FF6C01' : 'none' ,
-              'border-radius': showBorderGuest ? '10px' : '0px'
-            }"
                 v-model="guest"
                 label="Guests and rooms"
                 :dense="dense"
                 borderless
                 color="orange"
-                @focus="showBorderGuest = true"
-                @blur="showBorderGuest = false"
                 @click="showMenu = !showMenu"
                 class="lg:t-px-2 t-cursor-pointer t-w-full"
             >
@@ -93,28 +70,6 @@
             <button @click="hotelSearch" class="t-w-full lg:t-px-14 t-h-10 lg:t-h-full t-bg-dark-orange t-text-white t-rounded-l-lg lg:t-rounded-l-none t-rounded-r-lg">Search</button>
           </div>
         </div>
-       <!-- <div class="t-flex t-mx-auto t-w-7/12 t-my-8">
-          <div
-              v-for="(item, index) in filterOptions"
-              :key="index"
-              class="t-mx-2 t-w-full"
-          >
-            <label class="t-ml-2 t-mb-1 t-text-xs raleway t-text-font-black t-font-medium">
-              {{ item.label }}
-            </label>
-            <button
-                class="t-flex t-justify-between t-items-center t-w-full t-py-1 t-px-4 t-border t-border-dark-orange t-rounded-2xl"
-                @mouseenter="toggleMenu(item.name)"
-                @mouseleave="toggleMenu(item.name)"
-            >
-              <span class="t-text-sm t-tracking-widest">{{ item.defaultText }}</span>
-              <font-awesome-icon
-                  :icon="[isHoveredMenu[item.name] ? 'fas' : 'fas', isHoveredMenu[item.name] ? 'chevron-up' : 'chevron-down']"
-              />
-            </button>
-            <component :is="item.component" :show="show[item.name]" />
-          </div>
-        </div>-->
       </div>
       <div class="t-w-full lg:t-w-7/12 t-px-6 lg:t-px-0 t-mx-auto t-my-8">
         <p v-if="hotels && hotels.length > 0">List of hotels in the town: {{ place }}, with availability from {{ checkInDate }} to {{ checkOutDate }}</p>
@@ -178,13 +133,10 @@ export default {
     const hotels = computed(() => store.state.rapidHotels.hotels);
     const isLoading = computed(() => store.getters.isLoading);
 
-    console.log("Hotele w komponencie:", hotels.value);
-
     const hotelSearch = async () => {
       // Pobieranie dzisiejszej daty
       const today = new Date();
       const selectedDate = new Date(checkInDate.value);
-
       // Porównywanie dat
       if (selectedDate < today) {
         $q.notify({
@@ -195,15 +147,12 @@ export default {
         });
         return;
       }
-
       await store.commit('rapidHotels/SET_SEARCH_PARAMS', {
         checkin_date: checkInDate.value,
         checkout_date: checkOutDate.value
       });
-
       await store.dispatch('rapidHotels/searchLocations', { name: place.value, locale: 'pl' });
       const allLocations = store.getters['rapidHotels/allLocations'];
-
       if (allLocations && allLocations.length > 0) {
         const dest_id = allLocations[0]?.dest_id || '';
         const localeFromOtherService = allLocations[0]?.locale || 'pl';
@@ -224,72 +173,17 @@ export default {
       });
     };
 
-
-   /* const hotelRatingText = computed(() => store.state.hotels.hotelRating || 'None');
-    const hotelPropertyType = computed(() => store.state.hotels.propertyType || 'Hotels');*/
     const place = ref('');
     const text = ref('');
     const dense = ref(false);
     const checkInDate = ref('');
     const checkOutDate = ref('');
-    const showBorder = ref(false);
-    const showBorderCheckIn = ref(false);
-    const showBorderCheckOut = ref(false);
-    const showBorderGuest = ref(false);
     const searchParams = computed(() => store.state.rapidHotels.searchParams);
-
     const guest = computed(() => {
       return `${searchParams.value.adults_number}, ${searchParams.value.room_number}`;
     });
     const showMenu = ref(false);
 
-    const isHovered = ref(false);
-    const isHoveredHotel = ref(false);
-    const isHoveredType = ref(false);
-
-    const showPriceMenu = ref(false);
-    const showHotelRatings = ref(false);
-    const showPropertyType = ref(false);
-
-    console.log($q);
-    console.log($q.notify);
-
-
-  /*  const openPriceMenu = () => {
-      showPriceMenu.value = !showPriceMenu.value
-      if (showPriceMenu.value === true) {
-        isHovered.value = !isHovered.value
-      }
-    };
-
-    const openHotelRatings = () => {
-      showHotelRatings.value = !showHotelRatings.value
-      if (showHotelRatings.value === true) {
-        isHoveredHotel.value = !isHoveredHotel.value
-      }
-    }
-
-    const openPropertyType = () => {
-      showPropertyType.value = !showPropertyType.value
-      if (showPropertyType.value === true) {
-        isHoveredType.value = !isHoveredType.value
-      }
-    }*/
- /*   const filterOptions = ref([
-      { label: 'Price per night', name: 'PriceMenu', defaultText: '$0 - $600', component: 'PriceMenu' },
-      { label: 'Hotel ratings', name: 'HotelRatings', defaultText: hotelRatingText, component: 'HotelRatings' },
-      { label: 'Property type', name: 'PropertyType', defaultText: hotelPropertyType, component: 'PropertyType' },
-    ]);*/
-
-    const show = ref({});
-    const isHoveredMenu = ref({});
-
-    const toggleMenu = (name) => {
-      show[name] = !show[name];
-      if (show[name]) {
-        isHoveredMenu[name] = !isHoveredMenu[name];
-      }
-    };
     const removeHtmlTags = (text) => {
       return text.replace(/<\/?[^>]+(>|$)/g, "");
     };
@@ -298,28 +192,15 @@ export default {
       place,
       dense,
       text,
-      showBorder,
-      showBorderCheckIn,
-      showBorderCheckOut,
       checkInDate,
       checkOutDate,
       guest,
-      showBorderGuest,
       hotelSearch,
       showMenu,
-      isHovered,
       isLoading,
       hotels,
-      isHoveredHotel,
-      isHoveredType,
-      showPriceMenu,
-      showHotelRatings,
-      showPropertyType,
       removeHtmlTags,
-      toggleMenu,
-      show,
       store,
-      isHoveredMenu,
     }
   }
 }

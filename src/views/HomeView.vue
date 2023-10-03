@@ -6,6 +6,7 @@
     <page-layout>
       <home-page/>
       <other-thinks/>
+      <footer-page/>
     </page-layout>
   </div>
 </template>
@@ -15,10 +16,11 @@
 import NavBar from "@/components/home/NavBar";
 import HomePage from "@/components/home/HomePage";
 import OtherThinks from "@/components/home/OtherThinks";
+import FooterPage from "@/components/home/FooterPage";
 import PageLayout from "@/components/PageLayout";
 export default {
   name: 'HomeView',
-  components: {PageLayout, OtherThinks, HomePage, NavBar},
+  components: {FooterPage,PageLayout, OtherThinks, HomePage, NavBar},
   setup(){
 
     return{

@@ -10,3 +10,27 @@
 .button {
     @apply t-mt-2 t-px-10 t-py-3 t-bg-background-button t-text-white t-shadow-md t-rounded-lg hover:-t-translate-y-1/4 t-transition-transform
 }
+.flex-center {
+    @apply t-flex t-items-center t-justify-center
+}
+.flex-center-between {
+    @apply t-flex t-items-center t-justify-between
+}
+.flex-col-between {
+    @apply t-flex t-flex-col t-justify-between
+}
+.flex-start-between {
+    @apply t-flex t-items-start t-justify-between
+}
+.flex-col-start {
+    @apply t-flex t-items-start t-flex-col
+}
+.h-w-full {
+    @apply t-h-full t-w-full
+}
+.important-text {
+    @apply t-font-bold t-tracking-wide t-text-font-black
+}
+.invalid-text {
+    @apply t-tracking-wide t-text-font-black
+}
