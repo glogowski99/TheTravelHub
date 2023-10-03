@@ -1,5 +1,5 @@
 <template>
-  <div class="t-relative t-h-screen t-w-screen">
+  <div class="t-relative">
     <div class="t-relative t-hidden lg:t-flex">
       <yellow-stein class="t-absolute t-right-0 t-top-0"/>
     </div>
@@ -20,7 +20,7 @@
         <router-link to="/" class="button">Find More</router-link>
       </div>
       <div class="t-relative t-w-1/2">
-        <img alt="Tourist" src="@/assets/home-page-image.png" class="t-absolute t-top-0 t-left-0 t-right-0 t-bottom-0 t-h-[500px] t-hidden lg:t-flex"/>
+        <img alt="travel image" src="@/assets/travel.png" class="t-absolute t-top-0 t-left-0 t-right-0 t-bottom-0 t-h-[500px] t-hidden lg:t-flex"/>
       </div>
     </div>
   </div>

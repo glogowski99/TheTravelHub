@@ -25,6 +25,9 @@
 .flex-col-start {
     @apply t-flex t-items-start t-flex-col
 }
+.flex-col-center {
+    @apply t-flex t-items-center t-justify-center t-flex-col
+}
 .h-w-full {
     @apply t-h-full t-w-full
 }
@@ -33,4 +36,20 @@
 }
 .invalid-text {
     @apply t-tracking-wide t-text-font-black
+}
+.hotel-button {
+    @apply t-w-full lg:t-px-14 t-h-10 lg:t-h-full t-bg-dark-orange t-text-white t-rounded-l-lg lg:t-rounded-l-none t-rounded-r-lg
+}
+.button-hotel-box {
+    @apply t-mt-2 lg:t-mt-0 lg:t-h-full t-w-full lg:t-w-1/2 t-rounded-l-lg  t-rounded-r-lg lg:t-rounded-l-none
+}
+.hotel-main-div {
+    @apply t-flex t-items-center t-flex-wrap lg:t-flex-nowrap t-flex-col lg:t-flex-row t-mx-auto t-pl-2 t-pr-2 lg:t-pr-0 t-h-full lg:t-h-16 t-bg-white t-shadow t-rounded-lg
+}
+
+.button-form {
+    @apply t-px-12 t-h-full t-bg-dark-orange t-text-white t-rounded-r-lg
+}
+.main-box {
+    @apply t-flex t-items-center t-mx-auto t-w-full lg:t-w-7/12 2xl:t-w-3/12 t-pl-1 t-h-16 t-bg-white t-shadow t-rounded-lg
 }

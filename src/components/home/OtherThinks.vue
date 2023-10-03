@@ -1,5 +1,5 @@
 <template>
-  <div class="t-relative">
+  <div class="t-mt-44">
     <div class="t-container t-mx-auto">
       <p class="t-text-center raleway">
         something for you

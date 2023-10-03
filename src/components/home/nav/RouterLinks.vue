@@ -1,9 +1,10 @@
 <template>
-  <div class="t-flex t-flex-row t-flex-wrap t-justify-between t-w-9/12 lg:t-w-7/12 t-mt-8">
+  <div class="t-hidden lg:t-flex t-flex-row t-flex-wrap t-justify-between t-w-9/12 lg:t-w-7/12 t-mt-8">
     <div
         v-for="(item, index) in navItems"
         :key="index"
         class="t-flex "
+
     >
       <router-link
           :to="{ name: item.navRouter }"
@@ -15,38 +16,10 @@
   </div>
   </div>
 </template>
-
 <script>
-import {ref} from "vue";
-
 export default {
-  setup(){
-    const navItems = ref([
-      {
-        navName: 'Hotels',
-        navRouter: 'hotels',
-      },
-      {
-        navName: 'Flights',
-        navRouter: 'flights',
-      },
-      {
-        navName: 'Weather',
-        navRouter: 'weather',
-      },
-      {
-        navName: 'Currency',
-        navRouter: 'currency',
-      }
-    ]);
-    return{
-      navItems
-    }
-  }
-
+  props: {
+    navItems: Array,
+  },
 }
 </script>
-
-<style scoped>
-
-</style>
